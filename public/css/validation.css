@@ -1,0 +1,11 @@
+form p {
+    clear: both;
+    text-align: left;
+    margin: 7px 0;
+    min-height: 15px;
+}
+
+.error {
+   font-size: 20px !important;
+     color: #c00 !important;
+}

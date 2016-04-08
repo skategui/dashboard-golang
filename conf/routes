@@ -1,0 +1,49 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+module:testrunner
+module:jobs
+
+GET     /                                       Application.Index
+GET     /hotels                                 Hotels.Index
+GET     /hotels/list                            Hotels.List
+GET     /hotels/:id                             Hotels.Show
+GET     /hotels/:id/booking                     Hotels.Book
+POST    /hotels/:id/booking                     Hotels.ConfirmBooking
+POST    /bookings/:id/cancel                    Hotels.CancelBooking
+GET     /register                               Application.Register
+POST    /register                               Application.SaveUser
+GET     /settings                               Hotels.Settings
+POST    /settings                               Hotels.SaveSettings
+
+
+GET     /logout                                 Admin.Logout
+
+
+
+GET     /adm                                    Admin.Index
+GET     /registration                           Admin.Registration
+GET     /login                                  Admin.Login
+
+GET     /adm/catalogue                          Catalogue.Index
+GET     /adm/addProduct                         Catalogue.AddProduct
+
+
+GET     /adm/profile                            Profile.Index
+GET     /adm/stores                             Store.Stores
+GET     /adm/stores/:id                         Store.Store
+
+
+POST /api/add                                   Product.AddProduct
+GET  /api/get                                   Product.GetAllProducts
+GET  /api/get/:id                               Product.GetProductByID
+GET  /api/delete/:id                            Product.DeleteProductByID
+
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/*filepath                       Static.Serve("public")
+GET     /favicon.ico                            Static.Serve("public/img","favicon.png")
+
+# Catch all
+*       /:controller/:action                  :controller.:action

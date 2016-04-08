@@ -1,0 +1,154 @@
+{{set . "title" "Add Product"}}
+{{template "header.html" .}}
+
+<link rel="stylesheet" href="/public/dashboard/css/jquery.steps.css">
+
+<!--sidebar end-->
+<!--main content start-->
+<section id="main-content">
+    <section class="wrapper">
+
+        <h2 class="text-center">Add a product </h2>
+        <div class="row">
+            <div class="col-md-12">
+                <!--breadcrumbs start -->
+                <ul class="breadcrumb">
+                    <li><a href="/admin/index"><i class="fa fa-home"></i> Dashboard</a></li>
+                    <li class="active">Add product</li>
+                </ul>
+                <!--breadcrumbs end -->
+            </div>
+        </div>
+        <section class="panel">
+            <form class="cmxform form-horizontal " id="productForm" method="post" action="">
+            <div class="panel-body">
+                <div id="wizard-vertical">
+
+                    <h2>General info</h2>
+                    <section>
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-3">Product (required)</label>
+                            <div class="col-lg-6">
+                                <input class=" form-control" id="cname" name="name" minlength="2" type="text" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                        <label class="col-sm-3 control-label">Description</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" rows="6"></textarea>
+                        </div>
+                    </div>
+                    </section>
+
+                    <h2>Pricing</h2>
+                    <section>
+                        <div class="form-group ">
+                            <label for="cname" class="control-label col-lg-3">pricing (required)</label>
+                            <div class="col-lg-6">
+                                <input class=" form-control" id="pricing" name="name" minlength="2" type="text" required />
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label for="tax" class="control-label col-lg-3">Tax </label>
+                            <div class="col-lg-6">
+                                <input class="form-control " id="tax" type="email" name="email" required />
+                            </div>
+                        </div>
+                    </section>
+
+                    <h2>Pictures</h2>
+                    <section>
+                        <div class="panel-body">
+                            <form id="upload" method="post" action="upload.php" enctype="multipart/form-data">
+                                <div id="drop">
+                                    Drop Here
+
+                                    <a>Browse</a>
+                                    <input type="file" name="upl" multiple />
+                                </div>
+
+                                <ul>
+                                    <!-- The file uploads will be shown here -->
+                                </ul>
+
+                            </form>
+                        </div>
+                        OR
+                        <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
+                            <!-- Redirect browsers with JavaScript disabled to the origin page -->
+                            <noscript>
+                                <input type="hidden" name="redirect" value="http://blueimp.github.io/jQuery-File-Upload/">
+                            </noscript>
+                            <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                            <div class="row fileupload-buttonbar">
+                                <div class="col-lg-7">
+                                    <!-- The fileinput-button span is used to style the file input field as button -->
+                                    <span class="btn btn-success fileinput-button">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <span>Add files...</span>
+                                    <input type="file" name="files[]" multiple>
+                                    </span>
+                                    <button type="submit" class="btn btn-primary start">
+                                        <i class="glyphicon glyphicon-upload"></i>
+                                        <span>Start upload</span>
+                                    </button>
+                                    <button type="reset" class="btn btn-warning cancel">
+                                        <i class="glyphicon glyphicon-ban-circle"></i>
+                                        <span>Cancel upload</span>
+                                    </button>
+                                    <button type="button" class="btn btn-danger delete">
+                                        <i class="glyphicon glyphicon-trash"></i>
+                                        <span>Delete</span>
+                                    </button>
+                                    <input type="checkbox" class="toggle">
+                                    <!-- The global file processing state -->
+                                    <span class="fileupload-process"></span>
+                                </div>
+                                <!-- The global progress state -->
+                                <div class="col-lg-5 fileupload-progress fade">
+                                    <!-- The global progress bar -->
+                                    <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar progress-bar-success" style="width:0%;">
+                                        </div>
+                                    </div>
+                                    <!-- The extended global progress state -->
+                                    <div class="progress-extended">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- The table listing the files available for upload/download -->
+                            <table role="presentation" class="table table-striped">
+                                <tbody class="files">
+                                </tbody>
+                            </table>
+                        </form>
+                    </section>
+
+                    <h2>Quantity</h2>
+                    <section>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Quantity</label>
+                            <div class="col-sm-6">
+                                <input type="text"  class="form-control" placeholder="quantity">
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+            </form>
+        </section>
+    </section>
+</section>
+
+
+{{template "footer.html" .}}
+<script src="/public/dashboard/js/jquery.js"></script>
+<script class="include" type="text/javascript" src="/public/dashboard/js/jquery.dcjqaccordion.2.7.js"></script>
+<script src="/public/dashboard/js/jquery-steps/jquery.steps.js"></script>
+<script type="text/javascript" src="/public/dashboard/js/addProduct.js"></script>
+
+<script src="/public/dashboard/js/mini-upload-form/assets/js/jquery.ui.widget.js"></script>
+<script src="/public/dashboard/js/mini-upload-form/assets/js/jquery.iframe-transport.js"></script>
+<script src="/public/dashboard/js/mini-upload-form/assets/js/jquery.fileupload.js"></script>
