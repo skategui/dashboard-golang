@@ -44,7 +44,7 @@ func (c Application) Index() revel.Result {
 		return c.Redirect(routes.Hotels.Index())
 	}
 	c.Flash.Error("Please log in first")
-	return c.Render()
+	return c.Redirect(routes.Admin.Login())
 }
 
 func (c Application) Register() revel.Result {

@@ -5,6 +5,7 @@ import (
 "dashboard/app/models"
 "net/http"
 "encoding/json"
+	"dashboard/app/routes"
 )
 
 type Product struct {
@@ -40,12 +41,51 @@ func (c Product) AddProduct() revel.Result {
 }
 
 
+func (c Product) SubmitProduct(name, description string, quantity int) revel.Result{
+
+	c.Validation.Required(name).Message("Name can't be empty")
+	c.Validation.Required(description).Message("Description can't be empty")
+
+	c.Validation.Required(quantity).Message("Address can't be empty")
+
+	if c.Validation.HasErrors() {
+		return c.Redirect(routes.Catalogue.Index())
+	}
+	var product = models.Product{Name:name, Description:description, Quantity: quantity}
+
+	err := c.Txn.Insert(&product)
+	if err != nil {
+		panic(err)
+	}
+
+	var tmp = c.GetProductByName(name)
+	var assoProduct = models.AssoBrandProduct{BrandID:c.connected().BrandID, ProductID : tmp.ProductID}
+
+	addError := c.Txn.Insert(&assoProduct)
+	if addError != nil {
+		panic(addError)
+	}
+	return c.Redirect(routes.Catalogue.Index())
+}
+
+
 func (c Product) GetAllProducts() revel.Result {
 	var products []*models.Product
 	products = loadProducts(c.Txn.Select(models.Product{},
 		`select * from Product`))
 	return c.RenderJson(products)
 }
+
+func (c Product) GetProductByName(name string) models.Product {
+	var product models.Product
+	err := c.Txn.SelectOne(&product,
+		"select * from Product where name = ? ", name)
+	if err != nil {
+		panic(err)
+	}
+	return product
+}
+
 
 
 func (c Product) GetProductByID(id int) revel.Result {
@@ -60,7 +100,7 @@ func (c Product) GetProductByID(id int) revel.Result {
 }
 
 
-func (c Product) DeleteProductByID(id int64) revel.Result {
+func (c Product) DeleteProductByID(id int) revel.Result {
 	success, err := c.Txn.Delete(&models.Product{ProductID:id})
 	if err != nil || success == 0 {
 		return c.RenderText("Failed to remove Product with id %v", id)

@@ -1,9 +1,9 @@
 package models
 
 type AssoBrandProduct struct {
-	AssoBrandProductID           int64
-	BrandID      		     int64
-	ProductID    		     int64
+	AssoBrandProductID           int
+	BrandID      		     int
+	ProductID    		     int
 
 	//transient
 	Brand         	*Brand

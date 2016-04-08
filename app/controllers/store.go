@@ -3,7 +3,6 @@ package controllers
 import (
 "github.com/revel/revel"
 "dashboard/app/models"
-"net/http"
 "fmt"
 "dashboard/app/routes"
 )
@@ -21,17 +20,15 @@ func (c Store) SubmitStore(name, description, address, postcode, city, country s
 	c.Validation.Required(address).Message("Address can't be empty")
 
 	if c.Validation.HasErrors() {
-		c.Response.Status = http.StatusBadRequest
 		return c.Redirect(routes.Store.Stores())
 	}
 	var addr = address + ", " + postcode + ", " + city + ", " + country
-	var store = models.Store{Name:name, Description:description, Address:addr}
+	var store = models.Store{Name:name, Description:description, Address:addr, BrandID:c.connected().BrandID}
 
 	err := c.Txn.Insert(&store)
 	if err != nil {
 		panic(err)
 	}
-	c.Response.Status = http.StatusOK
 	return c.Redirect(routes.Store.Stores())
 }
 
@@ -48,6 +45,13 @@ func (c Store) GetStoreByID(id int) *models.Store  {
 	return store.(*models.Store)
 }
 
+func (c Store) DeleteStoreByID(id int) revel.Result {
+	success, err := c.Txn.Delete(&models.Store{StoreID:id})
+	if err != nil || success == 0 {
+		return c.RenderText("Failed to remove Store with id %v", id)
+	}
+	return c.RenderJson(success)
+}
 
 
 func (c Store) GetAllStoreByBrandID(brandID int32)  []*models.Store {

@@ -6,10 +6,10 @@ import (
 )
 
 type Product struct {
-	ProductID           int64 `db:"productID" json:"productID"`
+	ProductID          int 	  `db:"productID" json:"productID"`
 	Name               string `db:"name" json:"name"`
 	Description	   string `db:"description" json:"description"`
-	Quantity	      int `db:"quantity" json:"quantity"`
+	Quantity	   int    `db:"quantity" json:"quantity"`
 }
 
 func (product *Product) String() string {

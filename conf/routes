@@ -27,6 +27,7 @@ GET     /adm/addProduct                         Catalogue.AddProduct
 GET     /adm/profile                            Profile.Index
 GET     /adm/stores                             Store.Stores
 GET     /adm/stores/:id                         Store.Store
+GET     /adm/deletestore/:id                    Store.DeleteStoreByID
 
 
 POST /api/add                                   Product.AddProduct
