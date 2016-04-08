@@ -13,7 +13,7 @@ type Store struct {
 }
 
 
-func (c Store) SubmitStore(name, description, address string) revel.Result {
+func (c Store) SubmitStore(name, description, address, postcode, city, country string) revel.Result{
 
 	c.Validation.Required(name).Message("Name can't be empty")
 	c.Validation.Required(description).Message("Description can't be empty")
@@ -22,16 +22,17 @@ func (c Store) SubmitStore(name, description, address string) revel.Result {
 
 	if c.Validation.HasErrors() {
 		c.Response.Status = http.StatusBadRequest
-		return c.RenderJson(c.Validation.Errors)
+		return c.Redirect(routes.Store.Stores())
 	}
-	var store = models.Store{Name:name, Description:description, Address:address}
+	var addr = address + ", " + postcode + ", " + city + ", " + country
+	var store = models.Store{Name:name, Description:description, Address:addr}
 
 	err := c.Txn.Insert(&store)
 	if err != nil {
 		panic(err)
 	}
 	c.Response.Status = http.StatusOK
-	return c.RenderJson(store)
+	return c.Redirect(routes.Store.Stores())
 }
 
 

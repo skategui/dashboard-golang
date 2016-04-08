@@ -74,31 +74,3 @@ func (c Application) SaveUser(user models.User, verifyPassword string) revel.Res
 	c.Flash.Success("Welcome, " + user.Username)
 	return c.Redirect(routes.Hotels.Index())
 }
-
-/*func (c Application) Login(username, password string, remember bool) revel.Result {
-	user := c.getUser(username)
-	if user != nil {
-		err := bcrypt.CompareHashAndPassword(user.HashedPassword, []byte(password))
-		if err == nil {
-			c.Session["user"] = username
-			if remember {
-				c.Session.SetDefaultExpiration()
-			} else {
-				c.Session.SetNoExpiration()
-			}
-			c.Flash.Success("Welcome, " + username)
-			return c.Redirect(routes.Hotels.Index())
-		}
-	}
-
-	c.Flash.Out["username"] = username
-	c.Flash.Error("Login failed")
-	return c.Redirect(routes.Application.Index())
-}
-
-func (c Application) Logout() revel.Result {
-	for k := range c.Session {
-		delete(c.Session, k)
-	}
-	return c.Redirect(routes.Application.Index())
-}*/

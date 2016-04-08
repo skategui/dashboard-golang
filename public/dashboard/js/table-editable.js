@@ -75,17 +75,8 @@ var EditableTable = function () {
 
             var nEditing = null;
 
-            $('#editable-sample_new').click(function (e) {
-                e.preventDefault();
-                var aiNew = oTable.fnAddData(['', '', '', '',
-                        '<a class="edit" href="">Edit</a>', '<a class="cancel" data-mode="new" href="">Cancel</a>'
-                ]);
-                var nRow = oTable.fnGetNodes(aiNew[0]);
-                editRow(oTable, nRow);
-                nEditing = nRow;
-            });
 
-            $('#editable-sample a.delete').click(function (e) {
+            $('#editable-sample i.delete-row').click(function (e) {
                 e.preventDefault();
 
                 if (confirm("Are you sure to delete this row ?") == false) {
@@ -105,29 +96,6 @@ var EditableTable = function () {
                 } else {
                     restoreRow(oTable, nEditing);
                     nEditing = null;
-                }
-            });
-
-            $('#editable-sample a.edit').click(function (e) {
-                e.preventDefault();
-
-                /* Get the row as a parent of the link that was clicked on */
-                var nRow = $(this).parents('tr')[0];
-
-                if (nEditing !== null && nEditing != nRow) {
-                    /* Currently editing - but not this row - restore the old before continuing to edit mode */
-                    restoreRow(oTable, nEditing);
-                    editRow(oTable, nRow);
-                    nEditing = nRow;
-                } else if (nEditing == nRow && this.innerHTML == "Save") {
-                    /* Editing this row and want to save it */
-                    saveRow(oTable, nEditing);
-                    nEditing = null;
-                    alert("Updated! Do not forget to do some ajax to sync with backend :)");
-                } else {
-                    /* No edit in progress - let's start one */
-                    editRow(oTable, nRow);
-                    nEditing = nRow;
                 }
             });
         }
