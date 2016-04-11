@@ -31,6 +31,8 @@ func (c Admin) Login() revel.Result {
 	return c.Render()
 }
 
+
+
 func (c Admin) TryLogin(username, password string, remember bool) revel.Result {
 
 	c.Validation.Required(username).Message("Username can't be empty")
@@ -90,7 +92,7 @@ func (c Admin) Register(username, email, password, verifyPassword string) revel.
 
 	bcryptPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 
-	newUser := models.User{Email: email, Username:username, Password:password, HashedPassword: bcryptPassword, BrandID: 1} // should be dynamic
+	newUser := models.Employee{Email: email, Username:username, Password:password, HashedPassword: bcryptPassword, BrandID: 1} // should be dynamic
 	err := c.Txn.Insert(&newUser)
 	if err != nil {
 		panic(err)

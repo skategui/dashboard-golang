@@ -24,7 +24,7 @@ type Booking struct {
 	// Transient
 	CheckInDate  time.Time
 	CheckOutDate time.Time
-	User         *User
+	User         *Employee
 	Hotel        *Hotel
 }
 
@@ -79,7 +79,7 @@ func (b Booking) String() string {
 // - Sqlite's lack of support for datetimes.
 
 func (b *Booking) PreInsert(_ gorp.SqlExecutor) error {
-	b.UserId = b.User.UserID
+	b.UserId = b.User.EmployeeID
 	b.HotelId = b.Hotel.HotelId
 	b.CheckInStr = b.CheckInDate.Format(SQL_DATE_FORMAT)
 	b.CheckOutStr = b.CheckOutDate.Format(SQL_DATE_FORMAT)
@@ -92,11 +92,11 @@ func (b *Booking) PostGet(exe gorp.SqlExecutor) error {
 		err error
 	)
 
-	obj, err = exe.Get(User{}, b.UserId)
+	obj, err = exe.Get(Employee{}, b.UserId)
 	if err != nil {
 		return fmt.Errorf("Error loading a booking's user (%d): %s", b.UserId, err)
 	}
-	b.User = obj.(*User)
+	b.User = obj.(*Employee)
 
 	obj, err = exe.Get(Hotel{}, b.HotelId)
 	if err != nil {

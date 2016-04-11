@@ -13,12 +13,11 @@ POST    /settings                               Hotels.SaveSettings
 
 
 GET     /logout                                 Admin.Logout
-
-
+GET     /login                                  Admin.Login
+GET     /registration                           Admin.Registration
 
 GET     /adm                                    Admin.Index
-GET     /registration                           Admin.Registration
-GET     /login                                  Admin.Login
+
 
 GET     /adm/catalogue                          Catalogue.Index
 GET     /adm/addProduct                         Catalogue.AddProduct
@@ -34,6 +33,10 @@ POST /api/add                                   Product.AddProduct
 GET  /api/get                                   Product.GetAllProducts
 GET  /api/get/:id                               Product.GetProductByID
 GET  /api/delete/:id                            Product.DeleteProductByID
+
+
+POST    /api/login                              Api.Login
+POST    /api/signup                             Api.Signup
 
 
 # Map static resources from the /app/public folder to the /public path

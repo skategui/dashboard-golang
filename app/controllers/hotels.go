@@ -23,7 +23,7 @@ func (c Hotels) checkUser() revel.Result {
 
 func (c Hotels) Index() revel.Result {
 	results, err := c.Txn.Select(models.Booking{},
-		`select * from Booking where UserId = ?`, c.connected().UserID)
+		`select * from Booking where UserId = ?`, c.connected().EmployeeID)
 	if err != nil {
 		panic(err)
 	}
@@ -106,7 +106,7 @@ func (c Hotels) SaveSettings(password, verifyPassword string) revel.Result {
 
 	bcryptPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	_, err := c.Txn.Exec("update User set HashedPassword = ? where UserId = ?",
-		bcryptPassword, c.connected().UserID)
+		bcryptPassword, c.connected().EmployeeID)
 	if err != nil {
 		panic(err)
 	}

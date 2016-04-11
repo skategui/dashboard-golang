@@ -18,9 +18,9 @@ func (c Application) AddUser() revel.Result {
 	return nil
 }
 
-func (c Application) connected() *models.User {
+func (c Application) connected() *models.Employee {
 	if c.RenderArgs["user"] != nil {
-		return c.RenderArgs["user"].(*models.User)
+		return c.RenderArgs["user"].(*models.Employee)
 	}
 	if username, ok := c.Session["user"]; ok {
 		return c.getUser(username)
@@ -28,15 +28,15 @@ func (c Application) connected() *models.User {
 	return nil
 }
 
-func (c Application) getUser(username string) *models.User {
-	users, err := c.Txn.Select(models.User{}, `select * from User where Username = ?`, username)
+func (c Application) getUser(username string) *models.Employee {
+	users, err := c.Txn.Select(models.Employee{}, `select * from User where Username = ?`, username)
 	if err != nil {
 		panic(err)
 	}
 	if len(users) == 0 {
 		return nil
 	}
-	return users[0].(*models.User)
+	return users[0].(*models.Employee)
 }
 
 func (c Application) Index() revel.Result {
@@ -51,7 +51,7 @@ func (c Application) Register() revel.Result {
 	return c.Render()
 }
 
-func (c Application) SaveUser(user models.User, verifyPassword string) revel.Result {
+func (c Application) SaveUser(user models.Employee, verifyPassword string) revel.Result {
 	c.Validation.Required(verifyPassword)
 	c.Validation.Required(verifyPassword == user.Password).
 		Message("Password does not match")

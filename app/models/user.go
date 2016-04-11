@@ -10,38 +10,38 @@ import (
 type User struct {
 	UserID             int
 	Email              string
-	Username, Password string
+	Password  	   string
 	HashedPassword     []byte
-	BrandID		   int
+	Token		   string
 }
 
 func (u *User) String() string {
-	return fmt.Sprintf("User(%s)", u.Username)
+	return fmt.Sprintf("User(%s)", u.Email)
 }
 
-var userRegex = regexp.MustCompile("^\\w*$")
 
 func (user *User) Validate(v *revel.Validation) {
-	v.Check(user.Username,
+	var EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	v.Check(user.Email,
 		revel.Required{},
-		revel.MaxSize{15},
+		revel.MaxSize{100},
 		revel.MinSize{4},
-		revel.Match{userRegex},
-	)
+		revel.Match{regexp.MustCompile(EMAIL_PATTERN)},
+	).Message("Invalid email addr")
 
-	ValidatePassword(v, user.Password).
-	Key("user.Password")
+	v.Check(user.Password,
+		revel.Required{},
+		revel.MaxSize{30},
+		revel.MinSize{5},
+	).Message("Invalid password. Should be be between 5 and 30 characters")
 
 	v.Check(user.Email,
 		revel.Required{},
 		revel.MaxSize{100},
-	)
-}
+	).Message("Email is required")
 
-func ValidatePassword(v *revel.Validation, password string) *revel.ValidationResult {
-	return v.Check(password,
+	v.Check(user.Password,
 		revel.Required{},
-		revel.MaxSize{15},
-		revel.MinSize{5},
-	)
+		revel.MaxSize{100},
+	).Message("Password is required")
 }

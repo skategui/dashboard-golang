@@ -23,11 +23,19 @@ func InitDB() {
 		}
 	}
 
-	t := Dbm.AddTable(models.User{}).SetKeys(true, "UserID")
+	t:= Dbm.AddTable(models.Employee{}).SetKeys(true, "EmployeeID")
 	t.ColMap("Password").Transient = true
 	setColumnSizes(t, map[string]int{
 		"Username": 60,
 		"Email":    100,
+	})
+
+
+	t = Dbm.AddTable(models.User{}).SetKeys(true, "UserID")
+	t.ColMap("Password").Transient = true
+	setColumnSizes(t, map[string]int{
+		"Email":    100,
+		"Token":    100,
 	})
 
 	t = Dbm.AddTable(models.Hotel{}).SetKeys(true, "HotelId")
