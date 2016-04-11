@@ -19,6 +19,10 @@ type SignupResponse struct {
 	Token    string
 }
 
+type SuccessResponse struct {
+	Success bool
+}
+
 type SimplesReponse struct {
 	StatusCode int
 	Message    string
@@ -124,5 +128,62 @@ func (c Api) Login() revel.Result {
 		}
 		response := ErrorResponse{StatusCode:http.StatusBadRequest, Error:"Wrong credential"}
 		return c.RenderJson(response)
+	}
+}
+
+
+func (c Api) parseWishlist() (models.WishList, error) {
+	wishlist := models.WishList{}
+	err := json.NewDecoder(c.Request.Body).Decode(&wishlist)
+	return wishlist, err
+}
+
+func (c Api) isAlreadyExist(productID, userID int) bool {
+	wishlist := new(models.WishList)
+	err := c.Txn.SelectOne(wishlist, `SELECT * FROM WishList WHERE UserID = ? AND ProductID = ?`, userID, productID)
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func (c Api) AddWishlist() revel.Result {
+	if wishlist, err := c.parseWishlist(); err != nil {
+		return c.RenderText("Unable to parse the User from JSON.")
+	} else {
+		wishlist.Validate(c.Validation)
+		if c.Validation.HasErrors() {
+			return c.RenderJson(c.Validation.Errors)
+		}
+
+		var alreadyExist = c.isAlreadyExist(wishlist.ProductID, wishlist.UserID)
+		if (alreadyExist == true) {
+			var response = ErrorResponse{StatusCode:http.StatusBadRequest, Error: "Product already in the wishlist"}
+			return c.RenderJson(response)
+		}
+		err := c.Txn.Insert(&wishlist);
+		if err != nil {
+			panic(err)
+			return c.RenderJson(err)
+		}
+		var response = SuccessResponse{Success : true}
+		return c.RenderJson(response)
+	}
+}
+
+
+func (c Api) RemoveWishlist() revel.Result {
+	if wishlist, err := c.parseWishlist(); err != nil {
+		return c.RenderText("Unable to parse the User from JSON.")
+	} else {
+		wishlist.Validate(c.Validation)
+		if c.Validation.HasErrors() {
+			return c.RenderJson(ErrorResponse{StatusCode:http.StatusBadRequest, Error: "Parameter missing"})
+		}
+		_, err := c.Txn.Exec("delete FROM WishList WHERE UserID = ? AND ProductID = ?", wishlist.UserID, wishlist.ProductID)
+		if err != nil {
+			return c.RenderJson(ErrorResponse{StatusCode : http.StatusInternalServerError, Error: "Can't remove from wishlist"})
+		}
+		return c.RenderJson(SuccessResponse{Success : true})
 	}
 }

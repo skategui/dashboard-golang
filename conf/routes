@@ -37,6 +37,8 @@ GET  /api/delete/:id                            Product.DeleteProductByID
 
 POST    /api/login                              Api.Login
 POST    /api/signup                             Api.Signup
+POST    /api/addWishlist/:id                    Api.AddWishlist
+POST    /api/removeWishlist/:id                 Api.RemoveWishlist
 
 
 # Map static resources from the /app/public folder to the /public path

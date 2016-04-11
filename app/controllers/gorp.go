@@ -89,6 +89,15 @@ func InitDB() {
 	})
 
 
+	t = Dbm.AddTable(models.WishList{}).SetKeys(true, "WishListID")
+	t.ColMap("User").Transient = true
+	t.ColMap("Product").Transient = true
+	setColumnSizes(t, map[string]int{
+		"UserID":    	50,
+		"ProductID":	50,
+	})
+
+
 	Dbm.TraceOn("[gorp]", r.INFO)
 	Dbm.CreateTables()
 
