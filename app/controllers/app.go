@@ -29,7 +29,7 @@ func (c Application) connected() *models.Employee {
 }
 
 func (c Application) getUser(username string) *models.Employee {
-	users, err := c.Txn.Select(models.Employee{}, `select * from User where Username = ?`, username)
+	users, err := c.Txn.Select(models.Employee{}, `select * from Employee where Username = ?`, username)
 	if err != nil {
 		panic(err)
 	}

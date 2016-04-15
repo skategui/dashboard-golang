@@ -44,9 +44,9 @@
                                 <tbody>
                                 {{range .stores}}
                                 <tr id="{{.StoreID}}">
+                                    <td  class="center">{{.StoreID}}</td>
                                     <td  class="center">{{.Name}}</td>
                                     <td  class="center">{{.Address}}</td>
-                                    <td  class="center">{{.Description}}</td>
                                     <td  class="center">0</td>
                                     <td  class="center">
                                         <a href="/adm/stores/{{.StoreID}}"><i class="fa fa-eye pointer"></i></a>

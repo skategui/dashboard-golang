@@ -90,5 +90,7 @@ func (c Store) Store(id int) revel.Result {
 		c.Flash.Error("Please log in first")
 		return c.Redirect(routes.Admin.Login())
 	}
-	return c.Render()
+	store := c.GetStoreByID(id)
+	store.GetPositionByAddrName()
+	return c.Render(store)
 }

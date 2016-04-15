@@ -3,6 +3,8 @@ package models
 import (
 "fmt"
 "github.com/revel/revel"
+"github.com/kellydunn/golang-geo"
+	"encoding/json"
 )
 
 type Store struct {
@@ -11,8 +13,8 @@ type Store struct {
 	BrandID           int
 	Description	  string
 	Address		  string
-	Longitude	  float32
-	Latitude	  float32
+	Longitude	  float64
+	Latitude	  float64
 
 	//transient
 	Brand         	*Brand
@@ -34,5 +36,19 @@ func (store *Store) Validate(v *revel.Validation) {
 		revel.MinSize{4},
 		revel.MaxSize{100},
 	)
+}
+
+func  (store *Store) GetPositionByAddrName() {
+	geo.SetOpenCageAPIKey("5788cf4e67ac29311b77bf14d6e96d60")
+	geocoder := new (geo.OpenCageGeocoder)
+	fmt.Println(store.Address)
+	p,err := geocoder.Geocode(store.Address)
+	if (err != nil) {
+		panic(err)
+	}
+	store.Latitude = p.Lat()
+	store.Longitude = p.Lng()
+	fltB, _ := json.Marshal(p)
+	fmt.Println(string(fltB))
 }
 

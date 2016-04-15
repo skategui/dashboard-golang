@@ -8,7 +8,7 @@
 <section id="main-content">
     <section class="wrapper">
 
-        <h2 class="text-center">Office information </h2>
+        <h2 class="text-center">{{.store.Name}} </h2>
         <div class="row">
             <div class="col-md-12">
                 <!--breadcrumbs start -->
@@ -27,11 +27,8 @@
                         <h2> <span><i class="fa fa-map-marker"></i></span> location</h2>
                         <div class="location-info">
                             <p>Postal Address<br>
-                                PO Box 16122 Collins Street West<br>
-                                Victoria 8007 Australia</p>
-                            <p>Headquarters<br>
-                                121 King Street, Melbourne<br>
-                                Victoria 3000 Australia</p>
+                                {{.store.Address}}</p>
+
                         </div>
                         <h2> <span><i class="fa fa-phone"></i></span> contacts</h2>
                         <div class="location-info">
@@ -56,7 +53,7 @@
 
     //google map
     function initialize() {
-        var myLatlng = new google.maps.LatLng(-37.815207, 144.963937);
+        var myLatlng = new google.maps.LatLng({{.store.Latitude}}, {{.store.Longitude}});
         var mapOptions = {
             zoom: 15,
             scrollwheel: false,
@@ -67,7 +64,7 @@
         var marker = new google.maps.Marker({
             position: myLatlng,
             map: map,
-            title: 'Hello World!'
+            title: {{.store.Name}}
         });
     }
     google.maps.event.addDomListener(window, 'load', initialize);
@@ -76,7 +73,7 @@ $('.contact-map').click(function(){
 
     //google map in tab click initialize
     function initialize() {
-        var myLatlng = new google.maps.LatLng(-37.815207, 144.963937);
+        var myLatlng = new google.maps.LatLng({{.store.Latitude}}, {{.store.Longitude}});
         var mapOptions = {
             zoom: 15,
             scrollwheel: false,
@@ -87,7 +84,7 @@ $('.contact-map').click(function(){
         var marker = new google.maps.Marker({
             position: myLatlng,
             map: map,
-            title: 'Hello World!'
+            title: {{.store.Name}}
         });
     }
     google.maps.event.addDomListener(window, 'click', initialize);
